@@ -16,7 +16,7 @@ const Weather = () => {
       const { main: mood } = data.weather[0];
       const { name } = data;
       const { speed } = data.wind;
-      const { country } = data.sys;
+      const { country, sunset } = data.sys;
 
       const myNewWeather = {
         temp,
@@ -26,6 +26,7 @@ const Weather = () => {
         name,
         country,
         speed,
+        sunset,
       };
 
       setInfo(myNewWeather);
