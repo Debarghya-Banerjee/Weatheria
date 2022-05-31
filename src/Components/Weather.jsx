@@ -5,9 +5,11 @@ import "./style.css";
 const Weather = () => {
   const [searchValue, setSearchValue] = useState("Barasat");
   const [info, setInfo] = useState({});
+  const api_key = process.env.REACT_APP_API_KEY;
+  console.log(api_key);
   const getInfo = async () => {
     try {
-      let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchValue}&units=metric&appid=4cca2e42139bed2a8722abd2fe51b290`;
+      let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchValue}&units=metric&appid=${api_key}`;
 
       const res = await fetch(url);
       const data = await res.json();

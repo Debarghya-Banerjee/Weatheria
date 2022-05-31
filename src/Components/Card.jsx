@@ -18,11 +18,16 @@ const Card = ({ info }) => {
           setWeatherState("wi-day-sunny");
           break;
         case "Rain":
-          setWeatherState("wi-day-rain");
+          setWeatherState("wi-rain");
           break;
         case "Mist":
           setWeatherState("wi-dust");
           break;
+        case "Smoke":
+          setWeatherState("wi-smoke");
+          break;
+        case "Smog":
+          setWeatherState("wi-smog");
 
         default:
           setWeatherState("wi-day-sunny");
