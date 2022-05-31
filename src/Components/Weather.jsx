@@ -1,7 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Card from "./Card";
 import "./style.css";
 
-const weather = () => {
+const Weather = () => {
+  const [searchValue, setSearchValue] = useState("Barasat");
+  const [info, setInfo] = useState({});
+  const getInfo = async () => {
+    try {
+      let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchValue}&units=metric&appid=4cca2e42139bed2a8722abd2fe51b290`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const { temp, humidity, pressure } = data.main;
+      const { main: mood } = data.weather[0];
+      const { name } = data;
+      const { speed } = data.wind;
+      const { country } = data.sys;
+
+      const myNewWeather = {
+        temp,
+        humidity,
+        pressure,
+        mood,
+        name,
+        country,
+        speed,
+      };
+
+      setInfo(myNewWeather);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
   return (
     <>
       <div className="tName">
@@ -15,71 +51,18 @@ const weather = () => {
             autoFocus
             id="search"
             className="searchValue"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
-          <button className="searchButton" type="button">
+          <button className="searchButton" type="button" onClick={getInfo}>
             <i className={"wi wi-thermometer"}></i>
           </button>
         </div>
       </div>
-      <article className="widget">
-        <div className="weatherIcon">
-          <i className={"wi wi-day-sunny"}></i>
-        </div>
-        <div className="weatherInfo">
-          <div className="temperature">
-            <span>28&deg;</span>
-          </div>
-          <div className="description">
-            <div className="weatherCondition">Sunny</div>
-            <div className="place">Barasat, India</div>
-          </div>
-        </div>
-        <div className="date">{new Date().toLocaleString()}</div>
-        <div className="extra-temp">
-          <div className="temp-info-minmax">
-            <div className="two-sided-section">
-              <p>
-                <i className={"wi wi-sunset"}></i>
-              </p>
-              <p className="extra-info-leftsie">
-                19:19PM <br />
-                Sunset
-              </p>
-            </div>
-            <div className="two-sided-section">
-              <p>
-                <i className={"wi wi-rain"}></i>
-              </p>
-              <p className="extra-info-leftsie">
-                19:19PM <br />
-                Pressure
-              </p>
-            </div>
-          </div>
-          <div className="weather-extra-info">
-            <div className="two-sided-section">
-              <p>
-                <i className={"wi wi-humidity"}></i>
-              </p>
-              <p className="extra-info-leftsie">
-                19:19PM <br />
-                Humidity
-              </p>
-            </div>
-            <div className="two-sided-section">
-              <p>
-                <i className={"wi wi-strong-wind"}></i>
-              </p>
-              <p className="extra-info-leftsie">
-                4.48 <br />
-                Speed
-              </p>
-            </div>
-          </div>
-        </div>
-      </article>
+
+      <Card info={info} />
     </>
   );
 };
 
-export default weather;
+export default Weather;
